@@ -1,16 +1,18 @@
+"use client";
+import fetcher from "@/utils/fetchMessages";
 import React from "react";
+import useSWR from "swr";
+import MessageComponent from "./MessageComponent";
 
+// This component fetches messages from the server and renders them in a list.
 function MessageList() {
+  const { data: messages, error, mutate } = useSWR("/api/getMessages", fetcher);
+
   return (
-    <div>
-      <p>Message</p>
-      <p>Message</p>
-      <p>Message</p>
-      <p>Message</p>
-      <p>Message</p>
-      <p>Message</p>
-      <p>Message</p>
-      <p>Message</p>
+    <div className="space-y-5 px-5 pt-8 pb-32 max-w-2xl xl:max-w-4xl mx-auto">
+      {messages?.map((message) => (
+        <MessageComponent key={message.id} message={message} />
+      ))}
     </div>
   );
 }
