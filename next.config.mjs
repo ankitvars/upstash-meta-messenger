@@ -9,6 +9,11 @@ const nextConfig = {
       "lh3.googleusercontent.com",
     ],
   },
+  env: {
+    NEXT_PUBLIC_API_URL:
+      process.env.NEXT_PUBLIC_API_URL ||
+      "https://upstash-meta-messenger-mocha.vercel.app/",
+  },
 };
 
 export default nextConfig;
