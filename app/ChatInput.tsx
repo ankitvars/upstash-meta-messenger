@@ -1,19 +1,25 @@
 "use client";
+/* eslint-disable @typescript-eslint/no-unused-vars */
 
 import { v4 as uuid } from "uuid";
 import { FormEvent, useState } from "react";
 import { Message } from "@/typings";
 import useSWR from "swr";
 import fetcher from "@/utils/fetchMessages";
+import { Session, unstable_getServerSession } from "next-auth";
 
-function ChatInput() {
+type Props = {
+  session: Session | null; // Use Session type with null
+};
+
+function ChatInput({ session }: Props) {
   const [input, setInput] = useState("");
   const { data: messages, error, mutate } = useSWR("/api/getMessages", fetcher);
 
   const addMessage = async (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
 
-    if (!input) return;
+    if (!input || !session) return;
 
     const messageToSend = input;
 
@@ -25,9 +31,9 @@ function ChatInput() {
       id,
       message: messageToSend,
       created_at: Date.now(),
-      username: "Elon Musk",
-      profilePic: "https://i.ibb.co/zNpT1Ft/elon.jpg",
-      email: "elon@tesla.com",
+      username: session?.user?.name ?? "Unknown User", // Use optional chaining and a fallback
+      profilePic: session?.user?.image ?? "https://i.ibb.co/zNpT1Ft/elon.jpg", // Fallback profile picture
+      email: session?.user?.email ?? "unknown@domain.com", // Fallback email
     };
 
     //   Upload message function
@@ -56,6 +62,7 @@ function ChatInput() {
       <input
         value={input}
         onChange={(e) => setInput(e.target.value)}
+        disabled={!session}
         type="text"
         placeholder="Enter message here..."
         className="flex-1 rounded border border-gray-300 focus:outline-none focus:ring-2 focus:ring-blue-600 focus:border-transparent px-5 py-3 disabled:opacity-50 disabled:cursor-not-allowed"

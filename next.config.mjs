@@ -2,7 +2,12 @@
 const nextConfig = {
   reactStrictMode: true,
   images: {
-    domains: ["links.papareact.com", "i.ibb.co"],
+    domains: [
+      "links.papareact.com",
+      "i.ibb.co",
+      "kajabi-storefronts-production.kajabi-cdn.com",
+      "lh3.googleusercontent.com",
+    ],
   },
 };
 
