@@ -15,7 +15,7 @@ export const authOptions = {
   callbacks: {
     async redirect() {
       // Redirect to the base URL or customize as needed
-      return "http://localhost:3000";
+      return process.env.VERCEL_URL || "http://localhost:3000";
     },
   },
 };
