@@ -19,7 +19,6 @@ export default async function handler(
     res.status(405).json({ body: "Method not allowed" });
     return;
   }
-
   const messages = await redis.hvals("messages");
   const parsedMessages: Message[] = messages
     .map((message) => JSON.parse(message))
